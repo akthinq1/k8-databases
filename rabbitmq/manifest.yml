@@ -95,7 +95,10 @@ spec:
     spec: 
       containers:
         - name: rabbitmq
-          image: aneelp/rabbitmq:v1
+          image: rabbitmq:3
+          envFrom:
+            - secretRef:
+                name: rabbitmq-secret
           volumeMounts: 
             - name: rabbitmq-data
               mountPath: /data # This is nothing but PVC, you can directly create here

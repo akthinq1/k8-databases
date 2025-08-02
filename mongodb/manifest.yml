@@ -61,7 +61,7 @@ metadata:
     tier: database
 spec: 
   selector:
-    matchLables: 
+    matchLabels: 
       project: roboshop
       environment: dev
       component: mongodb

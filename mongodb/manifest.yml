@@ -71,10 +71,10 @@ spec:
   template: 
     metadata: 
       labels: 
-      project: roboshop
-      environment: dev
-      component: mongodb
-      tier: database
+        project: roboshop
+        environment: dev
+        component: mongodb
+        tier: database
     spec: 
       containers:
         - name: mongodb

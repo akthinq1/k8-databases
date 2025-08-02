@@ -5,86 +5,86 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongodb-headless
+  name: redis-headless
   namespace: roboshop
   labels:
     project: roboshop
     environment: dev
-    component: mongodb
+    component: redis
     tier: database
 spec:
   clusterIP: None
   selector: 
     project: roboshop
     environment: dev
-    component: mongodb
+    component: redis
     tier: database
   ports: 
     - protocol: TCP
-      port: 27017 # service port
-      targetPort: 27017 # container port
+      port: 6379 # service port
+      targetPort: 6379 # container port
 
 ---
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongodb
+  name: redis
   namespace: roboshop
   labels:
     project: roboshop
     environment: dev
-    component: mongodb
+    component: redis
     tier: database
 spec:
   selector: 
     project: roboshop
     environment: dev
-    component: mongodb
+    component: redis
     tier: database
   ports: 
     - protocol: TCP
-      port: 27017 # service port
-      targetPort: 27017 # container port
+      port: 6379 # service port
+      targetPort: 6379 # container port
 
 ---
 
 apiVersion: apps/v1
 kind: StatefulSet 
 metadata:
-  name: mongodb
+  name: redis
   namespace: roboshop
   labels: 
     project: roboshop
     environment: dev
-    component: mongodb
+    component: redis
     tier: database
 spec: 
   selector:
     matchLabels: 
       project: roboshop
       environment: dev
-      component: mongodb
+      component: redis
       tier: database # has to match .spec.template.metadata.labels
-  serviceName: "mongodb-headless" # this should be headless service
+  serviceName: "redis-headless" # this should be headless service
   replicas: 3 # by default it is 1
   template: 
     metadata: 
       labels: 
         project: roboshop
         environment: dev
-        component: mongodb
+        component: redis
         tier: database
     spec: 
       containers:
-        - name: mongodb
-          image: aneelp/mongodb:v1
+        - name: redis
+          image: redis:7.0
           volumeMounts: 
-            - name: mongodb-data
-              mountPath: /data/db # This is nothing but PVC, you can directly create here
+            - name: redis-data
+              mountPath: /data/redis # This is nothing but PVC, you can directly create here
   volumeClaimTemplates: 
     - metadata:
-        name: mongodb-data
+        name: redis-data
       spec: 
         accessModes: [ "ReadWriteOnce" ]
         storageClassName: "roboshop-ebs" 

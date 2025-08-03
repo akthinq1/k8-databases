@@ -61,8 +61,8 @@ spec:
     tier: database
   ports: 
     - protocol: TCP
-      port: 27017 # service port
-      targetPort: 27017 # container port
+      port: 3306 # service port
+      targetPort: 3306 # container port
 
 ---
 
